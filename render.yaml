@@ -1,0 +1,36 @@
+previews:
+  generation: automatic
+  expireAfterDays: 7
+
+services:
+  - type: web
+    name: securewebbank
+    runtime: python
+    plan: 0.5c-512mb
+    autoDeployTrigger: commit
+    previews:
+      generation: automatic
+      plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT --workers 1 --threads 4 --timeout 120 --access-logfile - --error-logfile -
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: DEMO_MODE
+        value: "0"
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: securewebbank-prod-db
+          property: connectionString
+
+databases:
+  - name: securewebbank-prod-db
+    plan: 0.1c-256mb
+    previewPlan: free
+    databaseName: securewebbank
+    user: securewebbank_app
+    postgresMajorVersion: "18"
+    ipAllowList: []
