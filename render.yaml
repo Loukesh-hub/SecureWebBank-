@@ -4,9 +4,9 @@ previews:
 
 services:
   - type: web
-    name: securewebbank
+    name: securewebbank-free-demo
     runtime: python
-    plan: 0.5c-512mb
+    plan: free
     autoDeployTrigger: commit
     previews:
       generation: automatic
@@ -23,14 +23,14 @@ services:
         generateValue: true
       - key: DATABASE_URL
         fromDatabase:
-          name: securewebbank-prod-db
+          name: securewebbank-free-demo-db
           property: connectionString
 
 databases:
-  - name: securewebbank-prod-db
-    plan: 0.1c-256mb
+  - name: securewebbank-free-demo-db
+    plan: free
     previewPlan: free
-    databaseName: securewebbank
-    user: securewebbank_app
+    databaseName: securewebbank_free_demo
+    user: securewebbank_demo_app
     postgresMajorVersion: "18"
     ipAllowList: []
