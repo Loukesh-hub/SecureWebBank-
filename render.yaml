@@ -1,16 +1,9 @@
-previews:
-  generation: automatic
-  expireAfterDays: 7
-
 services:
   - type: web
     name: securewebbank-free-demo
     runtime: python
     plan: free
     autoDeployTrigger: commit
-    previews:
-      generation: automatic
-      plan: free
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn app:app --bind 0.0.0.0:$PORT --workers 1 --threads 4 --timeout 120 --access-logfile - --error-logfile -
     healthCheckPath: /api/v1/health
@@ -29,7 +22,6 @@ services:
 databases:
   - name: securewebbank-free-demo-db
     plan: free
-    previewPlan: free
     databaseName: securewebbank_free_demo
     user: securewebbank_demo_app
     postgresMajorVersion: "18"
